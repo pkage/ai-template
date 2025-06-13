@@ -1,0 +1,64 @@
+[project]
+name = "ai-template"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "asyncclick>=8.1.8",
+    "einops>=0.8.1",
+    "python-dotenv>=1.1.0",
+    "rich>=14.0.0",
+    "safetensors>=0.5.3",
+    "torch>=2.7.1",
+    "torchvision>=0.22.1",
+    "wandb>=0.20.1",
+]
+
+# -- build ---
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "."}     # keep “flat” layout – no src/ directory
+
+# Only ship the code you really want.
+[tool.setuptools.packages.find]
+include = [
+    "experiment*"
+]
+exclude = [
+    "logs*",
+    "slurm*",
+    "docker*"
+] # non-package folders
+
+
+[tool.uv]
+package=true
+
+[project.scripts]
+experiment = "experiment:cli.cli"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.13",
+    "ty>=0.0.1a8",
+    "ipykernel>=6.29.5",
+]
+
+[tool.ds.scripts]
+format = "uv run ruff format"
+
+kernel-install = "uv run python -m ipykernel install --user --name=${1:-experiment}"
+kernel-remove = "jupyter kernelspec remove ${1:-experiment}"
+
+dev = [
+    "format"
+]
+
+git-hook-pre-commit = ["format"]
