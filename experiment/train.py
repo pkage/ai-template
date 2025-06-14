@@ -209,7 +209,7 @@ def train(
         if rank == 0:
             model_path = (
                 train_params.checkpoint_dir
-                / f'croma_checkpoint_{train_params.run_name}_epoch_{epoch}.pth'
+                / f'checkpoint_{train_params.run_name}_epoch_{epoch}.pth'
             )
             torch.save(
                 {
@@ -223,6 +223,6 @@ def train(
             # Save the latest checkpoint
             latest_model_path = (
                 train_params.checkpoint_dir
-                / f'croma_checkpoint_{train_params.run_name}_latest.pth'
+                / f'checkpoint_{train_params.run_name}_latest.pth'
             )
             shutil.copy(model_path, latest_model_path)
